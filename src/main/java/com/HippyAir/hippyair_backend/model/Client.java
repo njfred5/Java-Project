@@ -22,4 +22,19 @@ public class Client {
     private List<MilesReward> rewards;
 
     // getters and setters
+    public String getNumPassport() {
+        return numPassport;
+    }
+
+    public void setNumPassport(String numPassport) {
+        this.numPassport = numPassport;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

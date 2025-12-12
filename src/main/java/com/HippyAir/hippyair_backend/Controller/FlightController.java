@@ -1,7 +1,6 @@
 package com.HippyAir.hippyair_backend.Controller;
 
 import com.HippyAir.hippyair_backend.Model.Flight;
-import com.HippyAir.hippyair_backend.DTO.FlightDTO;
 import com.HippyAir.hippyair_backend.Service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/flights")
+@RequestMapping("/api/flights")
 public class FlightController {
 
     @Autowired
     private FlightService flightService;
 
     @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody FlightDTO flightDTO) {
-        Flight savedFlight = flightService.createFlight(flightDTO);
-        return ResponseEntity.ok(savedFlight);
+    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
+        return ResponseEntity.ok(flightService.createFlight(flight));
     }
 
     @GetMapping
@@ -27,30 +25,19 @@ public class FlightController {
         return flightService.getAllFlights();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Flight> getFlightById(@PathVariable Long id) {
-        Flight flight = flightService.getFlightById(id);
-        return ResponseEntity.ok(flight);
+    @GetMapping("/{flightNumber}")
+    public ResponseEntity<Flight> getFlight(@PathVariable String flightNumber) {
+        return ResponseEntity.ok(flightService.getFlightByNumber(flightNumber));
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Flight> updateFlight(@PathVariable Long id, @RequestBody FlightDTO flightDTO) {
-        Flight updatedFlight = flightService.updateFlight(id, flightDTO);
-        return ResponseEntity.ok(updatedFlight);
+    @PutMapping("/{flightNumber}")
+    public ResponseEntity<Flight> updateFlight(@PathVariable String flightNumber, @RequestBody Flight flight) {
+        return ResponseEntity.ok(flightService.updateFlight(flightNumber, flight));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFlight(@PathVariable Long id) {
-        flightService.deleteFlight(id);
+    @DeleteMapping("/{flightNumber}")
+    public ResponseEntity<Void> deleteFlight(@PathVariable String flightNumber) {
+        flightService.deleteFlight(flightNumber);
         return ResponseEntity.noContent().build();
-    }
-
-    // Search flights by departure/arrival city + date
-    @GetMapping("/search")
-    public List<Flight> searchFlights(
-            @RequestParam String departureCity,
-            @RequestParam String arrivalCity,
-            @RequestParam String departureDate) {
-        return flightService.searchFlights(departureCity, arrivalCity, departureDate);
     }
 }

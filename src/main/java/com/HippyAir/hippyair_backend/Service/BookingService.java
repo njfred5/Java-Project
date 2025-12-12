@@ -1,59 +1,67 @@
 package com.HippyAir.hippyair_backend.Service;
 
+import com.HippyAir.hippyair_backend.Model.Book;
+import com.HippyAir.hippyair_backend.Model.Client;
+import com.HippyAir.hippyair_backend.Model.Flight;
+import com.HippyAir.hippyair_backend.Model.MilesReward;
+import com.HippyAir.hippyair_backend.Repository.BookRepository;
+import com.HippyAir.hippyair_backend.Repository.MilesRewardRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
+
 @Service
 public class BookingService {
 
     @Autowired
-    private BookingRepository bookingRepository;
-    @Autowired
-    private ClientRepository clientRepository;
-    @Autowired
-    private FlightRepository flightRepository;
+    private BookRepository bookRepository;
+
     @Autowired
     private MilesRewardRepository milesRewardRepository;
+
     @Autowired
-    private DiscountCodeRepository discountCodeRepository;
+    private ClientService clientService;
 
-    public Booking createBooking(BookingRequestDTO dto) {
-        // 1. Find or create Client
-        Client client = clientRepository.findByPassportNumber(dto.getPassportNumber())
-            .orElseGet(() -> createNewClient(dto));
+    @Autowired
+    private FlightService flightService;
 
-        // 2. Find Flight
-        Flight flight = flightRepository.findByFlightNumber(dto.getFlightNumber())
-            .orElseThrow(() -> new RuntimeException("Flight not found"));
+    // Create booking
+    public Book createBooking(String clientPassport, String flightNumber, String typeOfSeat) {
+        Client client = clientService.getClientById(clientPassport);
+        Flight flight = flightService.getFlightByNumber(flightNumber);
 
-        // 3. Check seat availability
-        if (!flight.hasAvailableSeat(dto.getTypeOfSeat())) {
-            throw new RuntimeException("No available seat for type: " + dto.getTypeOfSeat());
+        if (flight.getNumberOfSeat() <= 0) {
+            throw new RuntimeException("No seats available");
         }
 
-        // 4. Create Booking
-        Booking booking = new Booking();
+        flight.setNumberOfSeat(flight.getNumberOfSeat() - 1);
+
+        Book booking = new Book();
         booking.setClient(client);
         booking.setFlight(flight);
-        booking.setTypeOfSeat(dto.getTypeOfSeat());
-        bookingRepository.save(booking);
+        booking.setTypeOfSeat(typeOfSeat);
 
-        // 5. Update MilesReward
-        MilesReward reward = new MilesReward(client.getId(), flight.getId(), LocalDate.now());
+        Book savedBooking = bookRepository.save(booking);
+
+        MilesReward reward = new MilesReward();
+        reward.setClient(client);
+        reward.setFlight(flight);
+        reward.setDate(LocalDate.now());
         milesRewardRepository.save(reward);
 
-        // 6. Check if client qualifies for discount
-        long flightsThisYear = milesRewardRepository.countByClientIdAndYear(client.getId(), Year.now().getValue());
-        if (flightsThisYear >= 3) {
-            DiscountCode code = new DiscountCode(client.getId(), generateRandomCode());
-            discountCodeRepository.save(code);
-        }
-
-        return booking;
+        return savedBooking;
     }
 
-    private Client createNewClient(BookingRequestDTO dto) {
-        User user = new User(dto.getFirstname(), dto.getLastname(), dto.getEmail(), dto.getPhone(), dto.getBirthdate());
-        Client client = new Client(dto.getPassportNumber(), user);
-        return clientRepository.save(client);
+    // Get all bookings
+    public List<Book> getAllBookings() {
+        return bookRepository.findAll();
     }
 
-    // Other CRUD methods: getAllBookings, getBookingById, updateBooking, deleteBooking
+    // Delete booking
+    public void deleteBooking(Long id) {
+        bookRepository.deleteById(id);
+    }
 }
+

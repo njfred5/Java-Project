@@ -1,7 +1,6 @@
 package com.HippyAir.hippyair_backend.Controller;
 
 import com.HippyAir.hippyair_backend.Model.Plane;
-import com.HippyAir.hippyair_backend.DTO.PlaneDTO;
 import com.HippyAir.hippyair_backend.Service.PlaneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +9,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/planes")
+@RequestMapping("/api/planes")
 public class PlaneController {
 
     @Autowired
     private PlaneService planeService;
 
     @PostMapping
-    public ResponseEntity<Plane> createPlane(@RequestBody PlaneDTO planeDTO) {
-        Plane savedPlane = planeService.createPlane(planeDTO);
-        return ResponseEntity.ok(savedPlane);
+    public ResponseEntity<Plane> createPlane(@RequestBody Plane plane) {
+        return ResponseEntity.ok(planeService.createPlane(plane));
     }
 
     @GetMapping
@@ -28,15 +26,13 @@ public class PlaneController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Plane> getPlaneById(@PathVariable Long id) {
-        Plane plane = planeService.getPlaneById(id);
-        return ResponseEntity.ok(plane);
+    public ResponseEntity<Plane> getPlane(@PathVariable Long id) {
+        return ResponseEntity.ok(planeService.getPlaneById(id));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Plane> updatePlane(@PathVariable Long id, @RequestBody PlaneDTO planeDTO) {
-        Plane updatedPlane = planeService.updatePlane(id, planeDTO);
-        return ResponseEntity.ok(updatedPlane);
+    public ResponseEntity<Plane> updatePlane(@PathVariable Long id, @RequestBody Plane plane) {
+        return ResponseEntity.ok(planeService.updatePlane(id, plane));
     }
 
     @DeleteMapping("/{id}")

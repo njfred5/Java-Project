@@ -1,7 +1,6 @@
 package com.HippyAir.hippyair_backend.Controller;
 
 import com.HippyAir.hippyair_backend.Model.Book;
-import com.HippyAir.hippyair_backend.DTO.BookingRequestDTO;
 import com.HippyAir.hippyair_backend.Service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,39 +9,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/api/bookings")
 public class BookController {
 
     @Autowired
     private BookingService bookingService;
 
-    // Create a new booking
     @PostMapping
-    public ResponseEntity<Booking> createBooking(@RequestBody BookingRequestDTO bookingRequest) {
-        Booking booking = bookingService.createBooking(bookingRequest);
-        return ResponseEntity.ok(booking);
+    public ResponseEntity<Book> createBooking(@RequestParam String clientPassport,
+                                              @RequestParam String flightNumber,
+                                              @RequestParam String typeOfSeat) {
+        return ResponseEntity.ok(bookingService.createBooking(clientPassport, flightNumber, typeOfSeat));
     }
 
-    // Get all bookings
     @GetMapping
-    public List<Booking> getAllBookings() {
+    public List<Book> getAllBookings() {
         return bookingService.getAllBookings();
     }
 
-    // Get booking by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<Booking> getBookingById(@PathVariable Long id) {
-        Booking booking = bookingService.getBookingById(id);
-        return ResponseEntity.ok(booking);
-    }
-
-    // Update booking
-    @PutMapping("/{id}")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long id, @RequestBody BookingRequestDTO bookingRequest) {
-        Booking updatedBooking = bookingService.updateBooking(id, bookingRequest);
-        return ResponseEntity.ok(updatedBooking);
-    }
-
-    // Delete booking
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>
+    public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
+        bookingService.deleteBooking(id);
+        return ResponseEntity.noContent().build();
+    }
+}

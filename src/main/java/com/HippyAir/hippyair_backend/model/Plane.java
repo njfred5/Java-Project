@@ -19,4 +19,35 @@ public class Plane {
     private List<Flight> flights;
 
     // getters and setters
+    public Long getIdPlane() {
+        return idPlane;
+    }
+
+    public void setIdPlane(Long idPlane) {
+        this.idPlane = idPlane;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public int getManufacturingYear() {
+        return manufacturingYear;
+    }
+
+    public void setManufacturingYear(int manufacturingYear) {
+        this.manufacturingYear = manufacturingYear;
+    }
 }

@@ -33,12 +33,12 @@ public class UserService {
     public User updateUser(Long id, User updatedUser) {
         User existingUser = getUserById(id);
 
-        existingUser.setFirstname(updatedUser.getFirstname());
-        existingUser.setLastname(updatedUser.getLastname());
+        existingUser.setFirstName(updatedUser.getFirstName());
+        existingUser.setLastName(updatedUser.getLastName());
         existingUser.setAddress(updatedUser.getAddress());
         existingUser.setEmail(updatedUser.getEmail());
         existingUser.setPhone(updatedUser.getPhone());
-        existingUser.setBirthdate(updatedUser.getBirthdate());
+        existingUser.setBirthDate(updatedUser.getBirthDate());
 
         return userRepository.save(existingUser);
     }

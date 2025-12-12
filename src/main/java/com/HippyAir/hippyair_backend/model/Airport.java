@@ -22,4 +22,35 @@ public class Airport {
     private List<Flight> arrivingFlights;
 
     // getters and setters
+    public Long getIdAirport() {
+        return idAirport;
+    }
+
+    public void setIdAirport(Long idAirport) {
+        this.idAirport = idAirport;
+    }
+
+    public String getNameAirport() {
+        return nameAirport;
+    }
+
+    public void setNameAirport(String nameAirport) {
+        this.nameAirport = nameAirport;
+    }
+
+    public String getCountryAirport() {
+        return countryAirport;
+    }
+
+    public void setCountryAirport(String countryAirport) {
+        this.countryAirport = countryAirport;
+    }
+
+    public String getCityAirport() {
+        return cityAirport;
+    }
+
+    public void setCityAirport(String cityAirport) {
+        this.cityAirport = cityAirport;
+    }
 }

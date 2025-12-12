@@ -23,4 +23,35 @@ public class Book {
     private LocalDateTime bookingDate;
 
     // getters and setters
+    public Long getIdReservation() {
+        return idReservation;
+    }
+
+    public void setIdReservation(Long idReservation) {
+        this.idReservation = idReservation;
+    }
+
+    public Flight getFlight() {
+        return flight;
+    }
+
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
+
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public String getTypeOfSeat() {
+        return typeOfSeat;
+    }
+
+    public void setTypeOfSeat(String typeOfSeat) {
+        this.typeOfSeat = typeOfSeat;
+    }
 }

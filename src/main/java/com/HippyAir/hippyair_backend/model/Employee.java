@@ -18,4 +18,35 @@ public class Employee {
     private User user;
 
     // getters and setters
+    public Long getNumEmp() {
+        return numEmp;
+    }
+
+    public void setNumEmp(Long numEmp) {
+        this.numEmp = numEmp;
+    }
+
+    public String getProfession() {
+        return profession;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

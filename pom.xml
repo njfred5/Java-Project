@@ -8,12 +8,21 @@
 		<version>4.0.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
+<<<<<<< HEAD
 	<groupId>com.HippyAir</groupId>
 	<artifactId>hippyair_backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>hippyair_backend</name>
 	<description>Demo project for Spring Boot</description>
+=======
+	<groupId>com.KORNN</groupId>
+	<artifactId>airline_backend</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>airline_backend</name>
+	<description>Airline backend using java</description>
+>>>>>>> 9ca4490 (first commit)
 	<url/>
 	<licenses>
 		<license/>

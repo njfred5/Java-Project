@@ -1,4 +1,4 @@
-package com.HippyAir.hippyair_backend.repository;
+package com.HippyAir.hippyair_backend.Repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

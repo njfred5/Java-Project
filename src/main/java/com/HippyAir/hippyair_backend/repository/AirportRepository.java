@@ -1,4 +1,4 @@
-package com.HippyAir.hippyair_backend.repository;
+package com.HippyAir.hippyair_backend.Repository;
 
 import com.HippyAir.hippyair_backend.Model.Airport;
 import org.springframework.data.jpa.repository.JpaRepository;

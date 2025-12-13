@@ -1,7 +1,7 @@
 package com.HippyAir.hippyair_backend.Service;
 
-import com.HippyAir.hippyair_backend.Model.MilesReward;
-import com.HippyAir.hippyair_backend.Repository.MilesRewardRepository;
+import com.HippyAir.hippyair_backend.model.MilesReward;
+import com.HippyAir.hippyair_backend.repository.MilesRewardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

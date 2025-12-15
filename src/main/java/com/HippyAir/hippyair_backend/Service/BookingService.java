@@ -1,11 +1,11 @@
 package com.HippyAir.hippyair_backend.Service;
 
-import com.HippyAir.hippyair_backend.Model.Book;
-import com.HippyAir.hippyair_backend.Model.Client;
-import com.HippyAir.hippyair_backend.Model.Flight;
-import com.HippyAir.hippyair_backend.Model.MilesReward;
-import com.HippyAir.hippyair_backend.Repository.BookRepository;
-import com.HippyAir.hippyair_backend.Repository.MilesRewardRepository;
+import com.HippyAir.hippyair_backend.model.Book;
+import com.HippyAir.hippyair_backend.model.Client;
+import com.HippyAir.hippyair_backend.model.Flight;
+import com.HippyAir.hippyair_backend.model.MilesReward;
+import com.HippyAir.hippyair_backend.repository.BookRepository;
+import com.HippyAir.hippyair_backend.repository.MilesRewardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

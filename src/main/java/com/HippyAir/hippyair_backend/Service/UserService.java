@@ -1,7 +1,7 @@
 package com.HippyAir.hippyair_backend.Service;
 
-import com.HippyAir.hippyair_backend.Model.User;
-import com.HippyAir.hippyair_backend.Repository.UserRepository;
+import com.HippyAir.hippyair_backend.model.User;
+import com.HippyAir.hippyair_backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

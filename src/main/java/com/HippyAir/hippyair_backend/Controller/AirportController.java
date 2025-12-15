@@ -1,6 +1,6 @@
 package com.HippyAir.hippyair_backend.Controller;
 
-import com.HippyAir.hippyair_backend.Model.Airport;
+import com.HippyAir.hippyair_backend.model.Airport;
 import com.HippyAir.hippyair_backend.Service.AirportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.HippyAir.hippyair_backend.Model;
+package com.HippyAir.hippyair_backend.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;

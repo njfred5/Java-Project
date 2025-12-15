@@ -33,20 +33,20 @@ public class MilesRewardController {
         return ResponseEntity.noContent().build();
     }
 
-    // Extra: check if client qualifies for discount
+    // Check discount eligibility and generate code if eligible
     @GetMapping("/client/{passportNumber}/discount")
     public ResponseEntity<String> checkDiscount(@PathVariable String passportNumber) {
-        List<MilesReward> rewards = milesRewardService.getAllRewards()
+        List<MilesReward> rewardsThisYear = milesRewardService.getAllRewards()
                 .stream()
                 .filter(r -> r.getClient().getNumPassport().equals(passportNumber)
                         && r.getDate().getYear() == LocalDate.now().getYear())
                 .toList();
 
-        if (rewards.size() >= 3) {
+        if (rewardsThisYear.size() >= 3) {
             String discountCode = UUID.randomUUID().toString().substring(0, 8).toUpperCase();
             return ResponseEntity.ok("Discount code: " + discountCode);
         } else {
-            return ResponseEntity.ok("No discount yet. Flights this year: " + rewards.size());
+            return ResponseEntity.ok("No discount yet. Flights this year: " + rewardsThisYear.size());
         }
     }
 }

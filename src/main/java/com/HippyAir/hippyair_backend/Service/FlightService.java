@@ -1,10 +1,13 @@
 package com.HippyAir.hippyair_backend.Service;
 
-import com.HippyAir.hippyair_backend.model.Flight;
-import com.HippyAir.hippyair_backend.repository.FlightRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.HippyAir.hippyair_backend.model.Flight; 
+import com.HippyAir.hippyair_backend.repository.FlightRepository; 
+import org.springframework.beans.factory.annotation.Autowired; 
+import org.springframework.http.HttpStatus; 
+import org.springframework.stereotype.Service; 
+import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,5 +54,10 @@ public class FlightService {
     public void deleteFlight(String flightNumber) {
         flightRepository.deleteById(flightNumber);
     }
+    public List<Flight> searchFlights(String departureCity, String arrivalCity, LocalDateTime departureHour) { 
+    	LocalDateTime startOfDay = departureHour.toLocalDate().atStartOfDay(); 
+    	LocalDateTime endOfDay = startOfDay.plusDays(1); 
+    	return flightRepository.searchFlights(departureCity, arrivalCity, startOfDay, endOfDay); 
+    }	
 }
 

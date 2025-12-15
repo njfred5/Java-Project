@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.util.List;
 
 @RestController
@@ -39,5 +41,12 @@ public class FlightController {
     public ResponseEntity<Void> deleteFlight(@PathVariable String flightNumber) {
         flightService.deleteFlight(flightNumber);
         return ResponseEntity.noContent().build();
+    }
+ // Search endpoint 
+    @GetMapping("/search") 
+    public List<Flight> searchFlights(@RequestParam String departureCity, 
+    								  @RequestParam String arrivalCity, 
+    								  @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureHour) { 
+    	return flightService.searchFlights(departureCity, arrivalCity, departureHour); 
     }
 }

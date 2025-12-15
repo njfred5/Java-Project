@@ -1,19 +1,22 @@
 package com.HippyAir.hippyair_backend.repository;
 
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
 import com.HippyAir.hippyair_backend.model.Flight;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDateTime;
-
 import java.util.List;
 
-@Repository
 public interface FlightRepository extends JpaRepository<Flight, String> {
-    // Search flights by departure/arrival city and departure date
-    List<Flight> findByDepartureCityAndArrivalCityAndDepartureHour(
-        String departureCity, String arrivalCity, LocalDateTime departureHour
-    );
+
+    // Search by departure city, arrival city, and departure date
+    @Query("SELECT f FROM Flight f " +
+           "WHERE f.departureCity = :departureCity " +
+           "AND f.arrivalCity = :arrivalCity " +
+           "AND f.departureHour >= :departureHourStart " +
+           "AND f.departureHour < :departureHourEnd")
+    List<Flight> searchFlights(String departureCity,
+                               String arrivalCity,
+                               LocalDateTime departureHourStart,
+                               LocalDateTime departureHourEnd);
 }

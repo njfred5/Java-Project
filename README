@@ -142,5 +142,6 @@ curl http://localhost:8080/flights
 * DTOs are used to avoid exposing entities directly
 * Repositories extend `JpaRepository`
 
+---
 
-If the server starts and tables are created, your backend is working correctly.
+ If the server starts and tables are created, your backend is working correctly.

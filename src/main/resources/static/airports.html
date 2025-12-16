@@ -28,6 +28,17 @@
     <p>Our network of airports worldwide</p>
   </header>
 
+  <!-- Add/Edit Airport Form -->
+  <section class="form-section">
+    <form id="airportForm">
+      <input type="hidden" id="airportIdHidden"> <!-- used for edit -->
+      <input type="text" id="nameAirport" placeholder="Airport Name" required>
+      <input type="text" id="cityAirport" placeholder="City" required>
+      <input type="text" id="countryAirport" placeholder="Country" required>
+      <button type="submit">Save Airport</button>
+    </form>
+  </section>
+
   <!-- Airports Table -->
   <main class="content">
     <table id="airportsTable">
@@ -37,6 +48,7 @@
           <th>Name</th>
           <th>City</th>
           <th>Country</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -52,8 +64,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Call function to load airports
-    loadAirports();
+    document.addEventListener('DOMContentLoaded', () => {
+      loadAirports(); // load airports on page open
+    });
   </script>
 </body>
 </html>

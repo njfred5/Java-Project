@@ -28,6 +28,17 @@
     <p>Reservations made by clients</p>
   </header>
 
+  <!-- Add/Edit Booking Form -->
+  <section class="form-section">
+    <form id="bookingForm">
+      <input type="hidden" id="bookingIdHidden"> <!-- used for edit -->
+      <input type="text" id="clientPassport" placeholder="Client Passport" required>
+      <input type="text" id="flightNumber" placeholder="Flight Number" required>
+      <input type="text" id="typeOfSeat" placeholder="Seat Type" required>
+      <button type="submit">Save Booking</button>
+    </form>
+  </section>
+
   <!-- Bookings Table -->
   <main class="content">
     <table id="bookingsTable">
@@ -37,6 +48,7 @@
           <th>Seat Type</th>
           <th>Client Passport</th>
           <th>Flight Number</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -52,8 +64,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Call function to load bookings
-    loadBookings();
+    document.addEventListener('DOMContentLoaded', () => {
+      loadBookings(); // load bookings on page open
+    });
   </script>
 </body>
 </html>

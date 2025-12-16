@@ -25,23 +25,34 @@
   <!-- Page Header -->
   <header class="hero small-hero">
     <h1>Clients</h1>
-    <p>Registered clients and their linked user information</p>
+    <p>Manage airline clients</p>
   </header>
+
+  <!-- Add/Edit Client Form -->
+  <section class="form-section">
+    <form id="clientForm">
+      <input type="hidden" id="clientPassportHidden"> <!-- used for edit -->
+      <input type="text" id="numPassport" placeholder="Passport Number" required>
+      <input type="number" id="userId" placeholder="Linked User ID" required>
+      <button type="submit">Save Client</button>
+    </form>
+  </section>
 
   <!-- Clients Table -->
   <main class="content">
     <table id="clientsTable">
       <thead>
         <tr>
-          <th>Passport Number</th>
+          <th>Passport</th>
           <th>User ID</th>
           <th>First Name</th>
           <th>Last Name</th>
           <th>Email</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be inserted by script.js -->
+        <!-- Rows inserted by script.js -->
       </tbody>
     </table>
   </main>
@@ -53,8 +64,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Call function to load clients
-    loadClients();
+    document.addEventListener('DOMContentLoaded', () => {
+      loadClients(); // load clients on page open
+    });
   </script>
 </body>
 </html>

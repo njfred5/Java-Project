@@ -28,6 +28,18 @@
     <p>Our airline staff and their linked user information</p>
   </header>
 
+  <!-- Add/Edit Employee Form -->
+  <section class="form-section">
+    <form id="employeeForm">
+      <input type="hidden" id="employeeIdHidden"> <!-- used for edit -->
+      <input type="text" id="numEmp" placeholder="Employee ID" required>
+      <input type="text" id="profession" placeholder="Profession" required>
+      <input type="text" id="title" placeholder="Title" required>
+      <input type="number" id="userId" placeholder="Linked User ID" required>
+      <button type="submit">Save Employee</button>
+    </form>
+  </section>
+
   <!-- Employees Table -->
   <main class="content">
     <table id="employeesTable">
@@ -40,6 +52,7 @@
           <th>First Name</th>
           <th>Last Name</th>
           <th>Email</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -55,8 +68,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Call function to load employees
-    loadEmployees();
+    document.addEventListener('DOMContentLoaded', () => {
+      loadEmployees(); // load employees on page open
+    });
   </script>
 </body>
 </html>

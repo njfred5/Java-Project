@@ -28,6 +28,17 @@
     <p>Our fleet of aircraft</p>
   </header>
 
+  <!-- Add/Edit Plane Form -->
+  <section class="form-section">
+    <form id="planeForm">
+      <input type="hidden" id="planeIdHidden"> <!-- used for edit -->
+      <input type="text" id="brand" placeholder="Brand" required>
+      <input type="text" id="model" placeholder="Model" required>
+      <input type="number" id="manufacturingYear" placeholder="Manufacturing Year" required>
+      <button type="submit">Save Plane</button>
+    </form>
+  </section>
+
   <!-- Planes Table -->
   <main class="content">
     <table id="planesTable">
@@ -37,6 +48,7 @@
           <th>Brand</th>
           <th>Model</th>
           <th>Manufacturing Year</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -52,8 +64,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Call function to load planes
-    loadPlanes();
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPlanes(); // load planes on page open
+    });
   </script>
 </body>
 </html>

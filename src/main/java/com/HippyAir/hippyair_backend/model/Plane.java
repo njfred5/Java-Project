@@ -43,11 +43,12 @@ public class Plane {
         this.model = model;
     }
 
-    public int getManufacturingYear() {
+    public Integer getManufacturingYear() {
         return manufacturingYear;
     }
 
-    public void setManufacturingYear(int manufacturingYear) {
+    public void setManufacturingYear(Integer manufacturingYear) {
         this.manufacturingYear = manufacturingYear;
     }
+
 }

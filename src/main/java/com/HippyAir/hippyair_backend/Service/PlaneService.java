@@ -13,34 +13,27 @@ public class PlaneService {
     @Autowired
     private PlaneRepository planeRepository;
 
-    // Create a new plane
     public Plane createPlane(Plane plane) {
         return planeRepository.save(plane);
     }
 
-    // Get all planes
     public List<Plane> getAllPlanes() {
         return planeRepository.findAll();
     }
 
-    // Get plane by ID
     public Plane getPlaneById(Long id) {
         return planeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Plane not found"));
     }
 
-    // Update plane
-    public Plane updatePlane(Long id, Plane updatedPlane) {
-        Plane existing = getPlaneById(id);
-
-        existing.setBrand(updatedPlane.getBrand());
-        existing.setModel(updatedPlane.getModel());
-        existing.setManufacturingYear(updatedPlane.getManufacturingYear());
-
-        return planeRepository.save(existing);
+    public Plane updatePlane(Long id, Plane planeDetails) {
+        Plane plane = getPlaneById(id);
+        plane.setBrand(planeDetails.getBrand());
+        plane.setModel(planeDetails.getModel());
+        plane.setManufacturingYear(planeDetails.getManufacturingYear());
+        return planeRepository.save(plane);
     }
 
-    // Delete plane
     public void deletePlane(Long id) {
         planeRepository.deleteById(id);
     }

@@ -28,6 +28,19 @@
     <p>List of all registered users in Timeout Airline</p>
   </header>
 
+  <!-- Add/Edit User Form -->
+  <section class="form-section">
+    <form id="userForm">
+      <input type="hidden" id="userId"> <!-- hidden for edit -->
+      <input type="text" id="firstName" placeholder="First Name" required>
+      <input type="text" id="lastName" placeholder="Last Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="text" id="phone" placeholder="Phone" required>
+      <input type="date" id="birthDate" required>
+      <button type="submit">Save User</button>
+    </form>
+  </section>
+
   <!-- Users Table -->
   <main class="content">
     <table id="usersTable">
@@ -39,6 +52,7 @@
           <th>Email</th>
           <th>Phone</th>
           <th>Birth Date</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -54,8 +68,9 @@
 
   <script src="script.js"></script>
   <script>
-    // Call function to load users
-    loadUsers();
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUsers(); // load users on page open
+    });
   </script>
 </body>
 </html>

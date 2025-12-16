@@ -28,13 +28,18 @@
     <p>Explore available flights and search by city/date</p>
   </header>
 
-  <!-- Search Form -->
-  <section class="search-section">
-    <form id="searchForm">
+  <!-- Add/Edit Flight Form -->
+  <section class="form-section">
+    <form id="flightForm">
+      <input type="hidden" id="flightIdHidden"> <!-- used for edit -->
+      <input type="text" id="flightNumber" placeholder="Flight Number" required>
       <input type="text" id="departureCity" placeholder="Departure City" required>
       <input type="text" id="arrivalCity" placeholder="Arrival City" required>
       <input type="datetime-local" id="departureHour" required>
-      <button type="submit">Search Flights</button>
+      <input type="datetime-local" id="arrivalHour" required>
+      <input type="number" id="numberOfSeat" placeholder="Seats" required>
+      <input type="number" id="economyClassPrice" placeholder="Economy Price" required>
+      <button type="submit">Save Flight</button>
     </form>
   </section>
 
@@ -50,6 +55,25 @@
           <th>Arrival Time</th>
           <th>Seats</th>
           <th>Economy Price</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
+        <!-- Rows will be inserted by script.js -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      loadFlights(); // load flights on page open
+    });
+  </script>
+</body>
+</html>

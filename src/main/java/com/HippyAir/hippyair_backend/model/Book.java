@@ -20,7 +20,7 @@ public class Book {
     private Client client;
 
     private String typeOfSeat;
-    private LocalDateTime bookingDate;
+    private LocalDateTime bookingDate;  // <-- field exists
 
     // getters and setters
     public Long getIdReservation() {
@@ -53,5 +53,13 @@ public class Book {
 
     public void setTypeOfSeat(String typeOfSeat) {
         this.typeOfSeat = typeOfSeat;
+    }
+
+    public LocalDateTime getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDateTime bookingDate) {
+        this.bookingDate = bookingDate;
     }
 }

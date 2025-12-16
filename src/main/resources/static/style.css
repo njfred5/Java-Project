@@ -1,0 +1,169 @@
+/* Global styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom, #e6f2ff, #ffffff);
+  color: #333;
+}
+#heroVideo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* video fills the area */
+  top: 0;
+  left: 0;
+  z-index: -1; /* keep video behind text */
+}
+html, body { 
+  height: 100%; /* full height */ 
+  margin: 0; 
+  display: flex; 
+  flex-direction: column; 
+}
+main {
+  flex: 1; /* take up remaining space and push footer down */
+}
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;        /* full screen for homepage */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  color: rgb(27, 61, 77);
+}
+
+.small-hero {
+  background: #004080;
+  color: white;
+  padding: 2em;
+  text-align: center;
+  height: auto;       /* shrink naturally */
+  display: block;     /* cancel flexbox */
+}
+
+
+
+.hero-text {
+  position: relative;
+  color: rgb(96, 142, 163);
+  text-align: center;
+  padding-top: 20%;
+}
+
+/* Navbar */
+.navbar {
+  background-color: #004080;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.navbar .logo {
+  color: #fff;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1em;
+}
+.navbar .nav-links li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+}
+.navbar .nav-links li a:hover {
+  text-decoration: underline;
+}
+
+/* Hero section */
+.hero h1 {
+  font-size: 3em;
+  margin-bottom: 0.5em;
+}
+.hero p {
+  font-size: 1.2em;
+  margin-bottom: 1em;
+}
+.hero button {
+  background-color: #ffcc00;
+  border: none;
+  padding: 1em 2em;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.hero button:hover {
+  background-color: #e6b800;
+}
+
+/* Footer */
+footer {
+  background-color: #004080;
+  color: #fff;
+  text-align: center;
+  padding: 1em;
+}
+/* Table styling */
+table {
+  width: 90%;
+  margin: 2em auto;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+thead {
+  background-color: #004080;
+  color: #fff;
+}
+th, td {
+  padding: 1em;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+tr:hover {
+  background-color: #f2f2f2;
+}
+
+/* Smaller hero for subpages */
+.small-hero {
+  background: #004080;
+  color: white;
+  padding: 2em;
+  text-align: center;
+}
+/* Search form styling */
+.search-section {
+  text-align: center;
+  margin: 2em;
+}
+.search-section input, .search-section button {
+  padding: 0.7em;
+  margin: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.search-section button {
+  background-color: #004080;
+  color: white;
+  cursor: pointer;
+}
+.search-section button:hover {
+  background-color: #003366;
+}
+/* Result box styling */
+.result-box {
+  width: 80%;
+  margin: 2em auto;
+  padding: 2em;
+  background-color: #f9f9f9;
+  border: 2px solid #004080;
+  border-radius: 8px;
+  text-align: center;
+  font-size: 1.2em;
+}

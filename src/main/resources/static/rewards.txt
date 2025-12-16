@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timeout Airline - Rewards</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">✈️ Timeout Airline</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="users.html">Users</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="planes.html">Planes</a></li>
+      <li><a href="airports.html">Airports</a></li>
+      <li><a href="flights.html">Flights</a></li>
+      <li><a href="bookings.html">Bookings</a></li>
+      <li><a href="rewards.html" class="active">Rewards</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="hero small-hero">
+    <h1>Rewards</h1>
+    <p>Check client discount eligibility</p>
+  </header>
+
+  <!-- Rewards Search Form -->
+  <section class="search-section">
+    <form id="rewardForm">
+      <input type="text" id="passportNumber" placeholder="Enter Passport Number" required>
+      <button type="submit">Check Discount</button>
+    </form>
+  </section>
+
+  <!-- Rewards Result -->
+  <main class="content">
+    <div id="rewardResult" class="result-box">
+      <!-- Discount info will be inserted here -->
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Handle reward form
+    document.getElementById('rewardForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const passport = document.getElementById('passportNumber').value;
+      checkReward(passport);
+    });
+  </script>
+</body>
+</html>

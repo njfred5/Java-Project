@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timeout Airline - Employees</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">✈️ Timeout Airline</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="users.html">Users</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="employees.html" class="active">Employees</a></li>
+      <li><a href="planes.html">Planes</a></li>
+      <li><a href="airports.html">Airports</a></li>
+      <li><a href="flights.html">Flights</a></li>
+      <li><a href="bookings.html">Bookings</a></li>
+      <li><a href="rewards.html">Rewards</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="hero small-hero">
+    <h1>Employees</h1>
+    <p>Our airline staff and their linked user information</p>
+  </header>
+
+  <!-- Employees Table -->
+  <main class="content">
+    <table id="employeesTable">
+      <thead>
+        <tr>
+          <th>Employee ID</th>
+          <th>Profession</th>
+          <th>Title</th>
+          <th>User ID</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be inserted by script.js -->
+      </tbody>
+    </table>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Call function to load employees
+    loadEmployees();
+  </script>
+</body>
+</html>

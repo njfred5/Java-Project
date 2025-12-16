@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Timeout Airline - Flights</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="logo">✈️ Timeout Airline</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="users.html">Users</a></li>
+      <li><a href="clients.html">Clients</a></li>
+      <li><a href="employees.html">Employees</a></li>
+      <li><a href="planes.html">Planes</a></li>
+      <li><a href="airports.html">Airports</a></li>
+      <li><a href="flights.html" class="active">Flights</a></li>
+      <li><a href="bookings.html">Bookings</a></li>
+      <li><a href="rewards.html">Rewards</a></li>
+    </ul>
+  </nav>
+
+  <!-- Page Header -->
+  <header class="hero small-hero">
+    <h1>Flights</h1>
+    <p>Explore available flights and search by city/date</p>
+  </header>
+
+  <!-- Search Form -->
+  <section class="search-section">
+    <form id="searchForm">
+      <input type="text" id="departureCity" placeholder="Departure City" required>
+      <input type="text" id="arrivalCity" placeholder="Arrival City" required>
+      <input type="datetime-local" id="departureHour" required>
+      <button type="submit">Search Flights</button>
+    </form>
+  </section>
+
+  <!-- Flights Table -->
+  <main class="content">
+    <table id="flightsTable">
+      <thead>
+        <tr>
+          <th>Flight Number</th>
+          <th>Departure City</th>
+          <th>Arrival City</th>
+          <th>Departure Time</th>
+          <th>Arrival Time</th>
+          <th>Seats</th>
+          <th>Economy Price</th>
+        </tr>
+      </thead>
+      <tbody>

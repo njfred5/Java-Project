@@ -52,7 +52,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be inserted by script.js -->
+        <!-- Rows inserted by script -->
       </tbody>
     </table>
   </main>
@@ -62,11 +62,98 @@
     <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Inline JavaScript -->
   <script>
+    // Load all planes
+    function loadPlanes() {
+      fetch('/api/planes')
+        .then(response => response.json())
+        .then(planes => {
+          const tableBody = document.querySelector('#planesTable tbody');
+          tableBody.innerHTML = '';
+          planes.forEach(plane => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${plane.idPlane}</td>
+              <td>${plane.brand}</td>
+              <td>${plane.model}</td>
+              <td>${plane.manufacturingYear}</td>
+              <td>
+                <button onclick="editPlane(${plane.idPlane})">Edit</button>
+                <button onclick="deletePlane(${plane.idPlane})">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading planes:', error));
+    }
+
+    // Add or update plane
     document.addEventListener('DOMContentLoaded', () => {
-      loadPlanes(); // load planes on page open
+      const form = document.getElementById('planeForm');
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const id = document.getElementById('planeIdHidden').value;
+
+          const plane = {
+            brand: document.getElementById('brand').value,
+            model: document.getElementById('model').value,
+            manufacturingYear: parseInt(document.getElementById('manufacturingYear').value, 10)
+          };
+
+          const method = id ? 'PUT' : 'POST';
+          const url = id ? `/api/planes/${id}` : '/api/planes';
+
+          fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(plane)
+          })
+          .then(response => {
+            if (!response.ok) throw new Error('Error saving plane');
+            return response.json();
+          })
+          .then(() => {
+            loadPlanes();
+            form.reset();
+            document.getElementById('planeIdHidden').value = '';
+          })
+          .catch(error => console.error('Error saving plane:', error));
+        });
+      }
     });
+
+    // Edit plane (prefill form)
+    function editPlane(id) {
+      fetch(`/api/planes/${id}`)
+        .then(response => {
+          if (!response.ok) throw new Error('Error loading plane');
+          return response.json();
+        })
+        .then(plane => {
+          document.getElementById('planeIdHidden').value = plane.idPlane;
+          document.getElementById('brand').value = plane.brand;
+          document.getElementById('model').value = plane.model;
+          document.getElementById('manufacturingYear').value = plane.manufacturingYear;
+        })
+        .catch(error => console.error('Error loading plane:', error));
+    }
+
+    // Delete plane
+    function deletePlane(id) {
+      fetch(`/api/planes/${id}`, { method: 'DELETE' })
+        .then(response => {
+          if (!response.ok) throw new Error('Error deleting plane');
+          loadPlanes();
+        })
+        .catch(error => console.error('Error deleting plane:', error));
+    }
+
+    // Load planes on page open
+    document.addEventListener('DOMContentLoaded', loadPlanes);
   </script>
 </body>
 </html>

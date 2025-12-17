@@ -24,18 +24,102 @@
   <!-- Hero Section -->
   <header class="hero">
     <video autoplay muted loop id="heroVideo"> 
-    <source src="airline.mp4" type="video/mp4"> 
+      <source src="airline.mp4" type="video/mp4"> 
     </video>
-    <h1>Welcome to Timeout Airline</h1>   
-    <p>Your journey starts here. Explore flights, bookings, and rewards.</p>
-    <button onclick="showMessage()">Explore Now</button>
+
+    <!-- Overlay content (text + search) -->
+    <div class="hero-overlay">
+      <h1>Welcome to Timeout Airline</h1>   
+      <p>Your journey starts here. Explore flights, bookings, and rewards.</p>
+      <button onclick="showMessage()">Explore Now</button>
+
+      <!-- Flight Search Form -->
+      <form id="flightSearchForm" class="hero-search">
+        <input type="text" id="departureCity" placeholder="Departure City" required>
+        <input type="text" id="arrivalCity" placeholder="Arrival City" required>
+        <input type="datetime-local" id="departureHour" required>
+        <button type="submit">Search Flights</button>
+      </form>
+    </div>
   </header>
+
+  <!-- Flights Table -->
+  <main class="content">
+    <table id="flightsTable">
+      <thead>
+        <tr>
+          <th>Flight Number</th>
+          <th>Departure City</th>
+          <th>Arrival City</th>
+          <th>Departure Hour</th>
+          <th>Arrival Hour</th>
+          <th>Seats</th>
+          <th>Economy Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Rows will be inserted by script -->
+      </tbody>
+    </table>
+  </main>
 
   <!-- Footer -->
   <footer>
     <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Inline JavaScript -->
+  <script>
+    function showMessage() {
+      alert("Explore flights below!");
+    }
+
+    function searchFlights(departureCity, arrivalCity, departureHour) {
+      const url = `/api/flights/search?departureCity=${encodeURIComponent(departureCity)}&arrivalCity=${encodeURIComponent(arrivalCity)}&departureHour=${departureHour}`;
+      fetch(url)
+        .then(response => {
+          if (!response.ok) throw new Error('Error searching flights');
+          return response.json();
+        })
+        .then(flights => {
+          const tableBody = document.querySelector('#flightsTable tbody');
+          tableBody.innerHTML = '';
+          flights.forEach(flight => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${flight.flightNumber}</td>
+              <td>${flight.departureCity}</td>
+              <td>${flight.arrivalCity}</td>
+              <td>${formatDateTime(flight.departureHour)}</td>
+              <td>${formatDateTime(flight.arrivalHour)}</td>
+              <td>${flight.numberOfSeat}</td>
+              <td>${flight.economyClassPrice}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error searching flights:', error));
+    }
+
+    function formatDateTime(dateTimeString) {
+      if (!dateTimeString) return '';
+      const date = new Date(dateTimeString);
+      return date.toLocaleString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+
+    document.getElementById('flightSearchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const departureCity = document.getElementById('departureCity').value;
+      const arrivalCity = document.getElementById('arrivalCity').value;
+      const departureHour = document.getElementById('departureHour').value;
+      searchFlights(departureCity, arrivalCity, departureHour);
+    });
+  </script>
 </body>
 </html>

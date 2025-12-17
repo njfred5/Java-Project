@@ -40,6 +40,40 @@ body {
   border: 1px solid #ccc;
   border-radius: 5px;
 }
+.hero-overlay {
+  position: relative;
+  z-index: 1;           /* ensures overlay is above video */
+  color: white;         /* text stands out on video */
+  text-align: center;
+  background: rgba(0,0,0,0.4); /* semi-transparent background for readability */
+  padding: 2em;
+  border-radius: 10px;
+}
+
+.hero-search {
+  margin-top: 1.5em;
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+  flex-wrap: wrap;
+}
+
+.hero-search input, .hero-search button {
+  padding: 0.7em;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.hero-search button {
+  background-color: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.hero-search button:hover {
+  background-color: #e6b800;
+}
 
 .form-section input:focus,
 .form-section select:focus {

@@ -32,8 +32,9 @@ public class BookingService {
     @Autowired
     private FlightService flightService;
 
+    // Create booking and add reward
     public Book createBooking(String clientPassport, String flightNumber, String typeOfSeat) {
-        Client client = clientService.getClientById(clientPassport);
+        Client client = clientService.getClientByPassport(clientPassport);
         Flight flight = flightService.getFlightByNumber(flightNumber);
 
         if (flight.getNumberOfSeat() <= 0) {
@@ -63,10 +64,25 @@ public class BookingService {
         return savedBooking;
     }
 
+    // Get booking by ID
+    public Book getBookingById(Long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Booking not found"));
+    }
+
+    // Update booking (only seat type for simplicity)
+    public Book updateBooking(Long id, String typeOfSeat) {
+        Book booking = getBookingById(id);
+        booking.setTypeOfSeat(typeOfSeat);
+        return bookRepository.save(booking);
+    }
+
+    // Get all bookings
     public List<Book> getAllBookings() {
         return bookRepository.findAll();
     }
 
+    // Delete booking
     public void deleteBooking(Long id) {
         bookRepository.deleteById(id);
     }

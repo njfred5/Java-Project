@@ -13,31 +13,29 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
-    // Create client
     public Client createClient(Client client) {
         return clientRepository.save(client);
     }
 
-    // Get all clients
     public List<Client> getAllClients() {
         return clientRepository.findAll();
     }
 
-    // Get client by passport number
-    public Client getClientById(String passportNumber) {
+    // FIXED: clearer name
+    public Client getClientByPassport(String passportNumber) {
         return clientRepository.findById(passportNumber)
                 .orElseThrow(() -> new RuntimeException("Client not found"));
     }
 
-    // Update client
     public Client updateClient(String passportNumber, Client clientDetails) {
-        Client client = getClientById(passportNumber);
+        Client client = getClientByPassport(passportNumber);
+        client.setNumPassport(clientDetails.getNumPassport());
         client.setUser(clientDetails.getUser());
         return clientRepository.save(client);
     }
 
-    // Delete client
     public void deleteClient(String passportNumber) {
         clientRepository.deleteById(passportNumber);
     }
 }
+

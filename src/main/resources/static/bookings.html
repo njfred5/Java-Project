@@ -48,11 +48,12 @@
           <th>Seat Type</th>
           <th>Client Passport</th>
           <th>Flight Number</th>
+          <th>Booking Date</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be inserted by script.js -->
+        <!-- Rows will be inserted by script -->
       </tbody>
     </table>
   </main>
@@ -62,11 +63,102 @@
     <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Inline JavaScript -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      loadBookings(); // load bookings on page open
-    });
-  </script>
+  // Load all bookings
+  function loadBookings() {
+    fetch('/api/bookings')
+      .then(response => {
+        if (!response.ok) throw new Error('Error loading bookings');
+        return response.json();
+      })
+      .then(bookings => {
+        const tableBody = document.querySelector('#bookingsTable tbody');
+        tableBody.innerHTML = '';
+        bookings.forEach(book => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${book.idReservation}</td>
+            <td>${book.typeOfSeat}</td>
+            <td>${book.clientPassport || ''}</td>
+            <td>${book.flightNumber || ''}</td>
+            <td>${book.bookingDate || ''}</td>
+            <td>
+              <button onclick="editBooking(${book.idReservation})">Edit</button>
+              <button onclick="deleteBooking(${book.idReservation})">Delete</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error loading bookings:', error));
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('bookingForm');
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById('bookingIdHidden').value;
+        const clientPassport = document.getElementById('clientPassport').value;
+        const flightNumber = document.getElementById('flightNumber').value;
+        const typeOfSeat = document.getElementById('typeOfSeat').value;
+
+        let url, method;
+        if (id) {
+          // Update booking (seat type only)
+          url = `/api/bookings/${id}?typeOfSeat=${encodeURIComponent(typeOfSeat)}`;
+          method = 'PUT';
+        } else {
+          // Create booking for client
+          url = `/api/bookings?clientPassport=${encodeURIComponent(clientPassport)}&flightNumber=${encodeURIComponent(flightNumber)}&typeOfSeat=${encodeURIComponent(typeOfSeat)}`;
+          method = 'POST';
+        }
+
+        fetch(url, { method: method })
+          .then(response => {
+            if (!response.ok) throw new Error('Error saving booking');
+            return response.json();
+          })
+          .then(() => {
+            loadBookings();
+            form.reset();
+            document.getElementById('bookingIdHidden').value = '';
+          })
+          .catch(error => console.error('Error saving booking:', error));
+      });
+    }
+
+    loadBookings();
+  });
+
+  // Edit booking (prefill form)
+  function editBooking(id) {
+    fetch(`/api/bookings/${id}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Error loading booking');
+        return response.json();
+      })
+      .then(book => {
+        document.getElementById('bookingIdHidden').value = book.idReservation;
+        document.getElementById('clientPassport').value = book.clientPassport || '';
+        document.getElementById('flightNumber').value = book.flightNumber || '';
+        document.getElementById('typeOfSeat').value = book.typeOfSeat || '';
+      })
+      .catch(error => console.error('Error loading booking:', error));
+  }
+
+  // Delete booking
+  function deleteBooking(id) {
+    fetch(`/api/bookings/${id}`, { method: 'DELETE' })
+      .then(response => {
+        if (!response.ok) throw new Error('Error deleting booking');
+        loadBookings();
+      })
+      .catch(error => console.error('Error deleting booking:', error));
+  }
+</script>
+
 </body>
 </html>

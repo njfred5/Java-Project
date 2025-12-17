@@ -140,6 +140,7 @@ document.getElementById('clientForm').addEventListener('submit', function(event)
   .catch(error => console.error('Error saving client:', error));
 });
 
+
 // Edit client (prefill form)
 function editClient(passport) {
   fetch(`/api/clients/${passport}`)

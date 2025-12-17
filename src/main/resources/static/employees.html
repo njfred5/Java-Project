@@ -56,7 +56,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be inserted by script.js -->
+        <!-- Rows will be inserted by script -->
       </tbody>
     </table>
   </main>
@@ -66,11 +66,104 @@
     <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Inline JavaScript -->
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      loadEmployees(); // load employees on page open
-    });
-  </script>
+  // Load all employees
+  function loadEmployees() {
+    fetch('/api/employees')
+      .then(response => response.json())
+      .then(employees => {
+        const tableBody = document.querySelector('#employeesTable tbody');
+        tableBody.innerHTML = '';
+        employees.forEach(emp => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${emp.numEmp}</td>
+            <td>${emp.profession}</td>
+            <td>${emp.title}</td>
+            <td>${emp.user ? emp.user.idUser : ''}</td>
+            <td>${emp.user ? emp.user.firstName : ''}</td>
+            <td>${emp.user ? emp.user.lastName : ''}</td>
+            <td>${emp.user ? emp.user.email : ''}</td>
+            <td>
+              <button onclick="editEmployee(${emp.numEmp})">Edit</button>
+              <button onclick="deleteEmployee(${emp.numEmp})">Delete</button>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      })
+      .catch(error => console.error('Error loading employees:', error));
+  }
+
+  // Add or update employee
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('employeeForm');
+    if (form) {
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const empHidden = document.getElementById('employeeIdHidden').value;
+
+        const employee = {
+          numEmp: document.getElementById('numEmp').value, // keep as string
+          profession: document.getElementById('profession').value,
+          title: document.getElementById('title').value,
+          user: { idUser: parseInt(document.getElementById('userId').value, 10) }
+        };
+
+        const method = empHidden ? 'PUT' : 'POST';
+        const url = empHidden ? `/api/employees/${encodeURIComponent(empHidden)}` : '/api/employees';
+
+        fetch(url, {
+          method: method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(employee)
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Error saving employee');
+          return response.json();
+        })
+        .then(() => {
+          loadEmployees();
+          form.reset();
+          document.getElementById('employeeIdHidden').value = '';
+        })
+        .catch(error => console.error('Error saving employee:', error));
+      });
+    }
+  });
+
+  // Edit employee (prefill form)
+  function editEmployee(empId) {
+    fetch(`/api/employees/${encodeURIComponent(empId)}`)
+      .then(response => {
+        if (!response.ok) throw new Error('Error loading employee');
+        return response.json();
+      })
+      .then(emp => {
+        document.getElementById('employeeIdHidden').value = emp.numEmp;
+        document.getElementById('numEmp').value = emp.numEmp;
+        document.getElementById('profession').value = emp.profession;
+        document.getElementById('title').value = emp.title;
+        document.getElementById('userId').value = emp.user ? emp.user.idUser : '';
+      })
+      .catch(error => console.error('Error loading employee:', error));
+  }
+
+  // Delete employee
+  function deleteEmployee(empId) {
+    fetch(`/api/employees/${empId}`, { method: 'DELETE' })
+      .then(response => {
+        if (!response.ok) throw new Error('Error deleting employee');
+        loadEmployees();
+      })
+      .catch(error => console.error('Error deleting employee:', error));
+  }
+
+
+  // Load employees on page open
+  document.addEventListener('DOMContentLoaded', loadEmployees);
+</script>
 </body>
 </html>

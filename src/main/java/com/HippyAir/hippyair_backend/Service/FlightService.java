@@ -1,11 +1,9 @@
 package com.HippyAir.hippyair_backend.Service;
 
-import com.HippyAir.hippyair_backend.model.Flight; 
-import com.HippyAir.hippyair_backend.repository.FlightRepository; 
-import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.http.HttpStatus; 
-import org.springframework.stereotype.Service; 
-import org.springframework.web.server.ResponseStatusException;
+import com.HippyAir.hippyair_backend.model.Flight;
+import com.HippyAir.hippyair_backend.repository.FlightRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,8 +14,14 @@ public class FlightService {
     @Autowired
     private FlightRepository flightRepository;
 
-    // Create flight
+    // Create new flight
     public Flight createFlight(Flight flight) {
+        if (flight.getFlightNumber() == null || flight.getFlightNumber().isBlank()) {
+            throw new RuntimeException("Flight number is required");
+        }
+        if (flightRepository.existsById(flight.getFlightNumber())) {
+            throw new RuntimeException("Flight number already exists: " + flight.getFlightNumber());
+        }
         return flightRepository.save(flight);
     }
 
@@ -26,15 +30,16 @@ public class FlightService {
         return flightRepository.findAll();
     }
 
-    // Get flight by flight number
+    // Get flight by ID
     public Flight getFlightByNumber(String flightNumber) {
         return flightRepository.findById(flightNumber)
-                .orElseThrow(() -> new RuntimeException("Flight not found"));
+                .orElseThrow(() -> new RuntimeException("Flight not found: " + flightNumber));
     }
 
     // Update flight
     public Flight updateFlight(String flightNumber, Flight flightDetails) {
         Flight flight = getFlightByNumber(flightNumber);
+
         flight.setDepartureCity(flightDetails.getDepartureCity());
         flight.setArrivalCity(flightDetails.getArrivalCity());
         flight.setDepartureHour(flightDetails.getDepartureHour());
@@ -47,17 +52,22 @@ public class FlightService {
         flight.setPremiumSeatPrice(flightDetails.getPremiumSeatPrice());
         flight.setBusinessClassPrice(flightDetails.getBusinessClassPrice());
         flight.setEconomyClassPrice(flightDetails.getEconomyClassPrice());
+
         return flightRepository.save(flight);
     }
 
     // Delete flight
     public void deleteFlight(String flightNumber) {
+        if (!flightRepository.existsById(flightNumber)) {
+            throw new RuntimeException("Flight not found: " + flightNumber);
+        }
         flightRepository.deleteById(flightNumber);
     }
-    public List<Flight> searchFlights(String departureCity, String arrivalCity, LocalDateTime departureHour) { 
-    	LocalDateTime startOfDay = departureHour.toLocalDate().atStartOfDay(); 
-    	LocalDateTime endOfDay = startOfDay.plusDays(1); 
-    	return flightRepository.searchFlights(departureCity, arrivalCity, startOfDay, endOfDay); 
-    }	
-}
 
+    // Search flights by city/date
+    public List<Flight> searchFlights(String departureCity, String arrivalCity, LocalDateTime departureHour) {
+        LocalDateTime startOfDay = departureHour.toLocalDate().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        return flightRepository.searchFlights(departureCity, arrivalCity, startOfDay, endOfDay);
+    }
+}

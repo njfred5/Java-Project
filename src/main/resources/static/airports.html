@@ -52,7 +52,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Rows will be inserted by script.js -->
+        <!-- Rows inserted by script -->
       </tbody>
     </table>
   </main>
@@ -62,11 +62,97 @@
     <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Inline JavaScript -->
   <script>
+    // Load all airports
+    function loadAirports() {
+      fetch('/api/airports')
+        .then(response => response.json())
+        .then(airports => {
+          const tableBody = document.querySelector('#airportsTable tbody');
+          tableBody.innerHTML = '';
+          airports.forEach(airport => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${airport.idAirport}</td>
+              <td>${airport.nameAirport}</td>
+              <td>${airport.cityAirport}</td>
+              <td>${airport.countryAirport}</td>
+              <td>
+                <button onclick="editAirport(${airport.idAirport})">Edit</button>
+                <button onclick="deleteAirport(${airport.idAirport})">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading airports:', error));
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
-      loadAirports(); // load airports on page open
+      const form = document.getElementById('airportForm');
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const id = document.getElementById('airportIdHidden').value;
+
+          const airport = {
+            nameAirport: document.getElementById('nameAirport').value,
+            cityAirport: document.getElementById('cityAirport').value,
+            countryAirport: document.getElementById('countryAirport').value
+          };
+
+          const method = id ? 'PUT' : 'POST';
+          const url = id ? `/api/airports/${id}` : '/api/airports';
+
+          fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(airport)
+          })
+          .then(response => {
+            if (!response.ok) throw new Error('Error saving airport');
+            return response.json();
+          })
+          .then(() => {
+            loadAirports();
+            form.reset();
+            document.getElementById('airportIdHidden').value = '';
+          })
+          .catch(error => console.error('Error saving airport:', error));
+        });
+      }
+
+      // Load airports on page open
+      loadAirports();
     });
+
+    // Edit airport (prefill form)
+    function editAirport(id) {
+      fetch(`/api/airports/${id}`)
+        .then(response => {
+          if (!response.ok) throw new Error('Error loading airport');
+          return response.json();
+        })
+        .then(airport => {
+          document.getElementById('airportIdHidden').value = airport.idAirport;
+          document.getElementById('nameAirport').value = airport.nameAirport;
+          document.getElementById('cityAirport').value = airport.cityAirport;
+          document.getElementById('countryAirport').value = airport.countryAirport;
+        })
+        .catch(error => console.error('Error loading airport:', error));
+    }
+
+    // Delete airport
+    function deleteAirport(id) {
+      fetch(`/api/airports/${id}`, { method: 'DELETE' })
+        .then(response => {
+          if (!response.ok) throw new Error('Error deleting airport');
+          loadAirports();
+        })
+        .catch(error => console.error('Error deleting airport:', error));
+    }
   </script>
 </body>
 </html>

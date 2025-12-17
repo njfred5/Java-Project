@@ -52,7 +52,7 @@
         </tr>
       </thead>
       <tbody>
-        <!-- Rows inserted by script.js -->
+        <!-- Rows inserted by script -->
       </tbody>
     </table>
   </main>
@@ -62,11 +62,100 @@
     <p>&copy; 2025 Timeout Airline. All rights reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- Inline JavaScript -->
   <script>
+    // Load all clients
+    function loadClients() {
+      fetch('/api/clients')
+        .then(response => response.json())
+        .then(clients => {
+          const tableBody = document.querySelector('#clientsTable tbody');
+          tableBody.innerHTML = '';
+          clients.forEach(client => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${client.numPassport}</td>
+              <td>${client.user ? client.user.idUser : ''}</td>
+              <td>${client.user ? client.user.firstName : ''}</td>
+              <td>${client.user ? client.user.lastName : ''}</td>
+              <td>${client.user ? client.user.email : ''}</td>
+              <td>
+                <button onclick="editClient('${client.numPassport}')">Edit</button>
+                <button onclick="deleteClient('${client.numPassport}')">Delete</button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => console.error('Error loading clients:', error));
+    }
+
+    // Add or update client
     document.addEventListener('DOMContentLoaded', () => {
-      loadClients(); // load clients on page open
+      const form = document.getElementById('clientForm');
+      if (form) {
+        form.addEventListener('submit', function(event) {
+          event.preventDefault();
+
+          const passportHidden = document.getElementById('clientPassportHidden').value;
+          const client = {
+            numPassport: document.getElementById('numPassport').value,
+            user: { idUser: parseInt(document.getElementById('userId').value, 10) }
+          };
+
+          const method = passportHidden ? 'PUT' : 'POST';
+          const url = passportHidden ? `/api/clients/${encodeURIComponent(passportHidden)}` : '/api/clients';
+
+          fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(client)
+          })
+          .then(response => {
+            if (!response.ok) throw new Error('Error saving client');
+            return response.json();
+          })
+          .then(() => {
+            loadClients();
+            form.reset();
+            document.getElementById('clientPassportHidden').value = '';
+          })
+          .catch(error => console.error('Error saving client:', error));
+        });
+      }
     });
+
+    // Edit client (prefill form)
+    function editClient(passport) {
+    fetch(`/api/clients/${encodeURIComponent(passport)}`)
+    .then(response => {
+      if (!response.ok) throw new Error('Error loading client');
+      return response.json();
+    })
+    .then(client => {
+      // keep the original passport in the hidden field for PUT
+      document.getElementById('clientPassportHidden').value = client.numPassport;
+      // show passport in the form (you can edit it if you want)
+      document.getElementById('numPassport').value = client.numPassport;
+      document.getElementById('userId').value = client.user ? client.user.idUser : '';
+    })
+    .catch(error => console.error('Error loading client:', error));
+}
+
+
+    function deleteClient(passport) {
+    fetch(`/api/clients/${encodeURIComponent(passport)}`, { method: 'DELETE' })
+    .then(response => {
+      if (!response.ok) throw new Error('Error deleting client');
+      loadClients();
+    })
+    .catch(error => console.error('Error deleting client:', error));
+}
+
+
+
+    // Load clients on page open
+    document.addEventListener('DOMContentLoaded', loadClients);
   </script>
 </body>
 </html>

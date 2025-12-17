@@ -1,5 +1,6 @@
 package com.HippyAir.hippyair_backend.Controller;
 
+import com.HippyAir.hippyair_backend.DTO.FlightDTO;
 import com.HippyAir.hippyair_backend.model.Flight;
 import com.HippyAir.hippyair_backend.Service.FlightService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,27 +20,29 @@ public class FlightController {
 
     // Create flight
     @PostMapping
-    public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
-        return ResponseEntity.ok(flightService.createFlight(flight));
+    public ResponseEntity<FlightDTO> createFlight(@RequestBody Flight flight) {
+        Flight saved = flightService.createFlight(flight);
+        return ResponseEntity.ok(flightService.toDTO(saved));
     }
 
     // Get all flights
     @GetMapping
-    public List<Flight> getAllFlights() {
-        return flightService.getAllFlights();
+    public List<FlightDTO> getAllFlights() {
+        return flightService.getAllFlightsDTO();
     }
 
     // Get flight by ID
     @GetMapping("/{flightNumber}")
-    public ResponseEntity<Flight> getFlight(@PathVariable String flightNumber) {
-        return ResponseEntity.ok(flightService.getFlightByNumber(flightNumber));
+    public ResponseEntity<FlightDTO> getFlight(@PathVariable String flightNumber) {
+        return ResponseEntity.ok(flightService.getFlightDTO(flightNumber));
     }
 
     // Update flight
     @PutMapping("/{flightNumber}")
-    public ResponseEntity<Flight> updateFlight(@PathVariable String flightNumber, @RequestBody Flight flight) {
+    public ResponseEntity<FlightDTO> updateFlight(@PathVariable String flightNumber, @RequestBody Flight flight) {
         flight.setFlightNumber(flightNumber); // enforce ID consistency
-        return ResponseEntity.ok(flightService.updateFlight(flightNumber, flight));
+        Flight updated = flightService.updateFlight(flightNumber, flight);
+        return ResponseEntity.ok(flightService.toDTO(updated));
     }
 
     // Delete flight
@@ -51,9 +54,9 @@ public class FlightController {
 
     // Search flights
     @GetMapping("/search")
-    public List<Flight> searchFlights(@RequestParam String departureCity,
-                                      @RequestParam String arrivalCity,
-                                      @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureHour) {
-        return flightService.searchFlights(departureCity, arrivalCity, departureHour);
+    public List<FlightDTO> searchFlights(@RequestParam String departureCity,
+                                         @RequestParam String arrivalCity,
+                                         @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime departureHour) {
+        return flightService.searchFlightsDTO(departureCity, arrivalCity, departureHour);
     }
 }

@@ -1,5 +1,6 @@
 package com.HippyAir.hippyair_backend.Service;
 
+import com.HippyAir.hippyair_backend.DTO.FlightDTO;
 import com.HippyAir.hippyair_backend.model.Flight;
 import com.HippyAir.hippyair_backend.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FlightService {
@@ -25,18 +27,18 @@ public class FlightService {
         return flightRepository.save(flight);
     }
 
-    // Get all flights
+    // Get all flights (entities)
     public List<Flight> getAllFlights() {
         return flightRepository.findAll();
     }
 
-    // Get flight by ID
+    // Get flight by ID (entity)
     public Flight getFlightByNumber(String flightNumber) {
         return flightRepository.findById(flightNumber)
                 .orElseThrow(() -> new RuntimeException("Flight not found: " + flightNumber));
     }
 
-    // Update flight
+    // Update flight (entity)
     public Flight updateFlight(String flightNumber, Flight flightDetails) {
         Flight flight = getFlightByNumber(flightNumber);
 
@@ -69,5 +71,32 @@ public class FlightService {
         LocalDateTime startOfDay = departureHour.toLocalDate().atStartOfDay();
         LocalDateTime endOfDay = startOfDay.plusDays(1);
         return flightRepository.searchFlights(departureCity, arrivalCity, startOfDay, endOfDay);
+    }
+
+    // ✅ DTO mapping
+    public FlightDTO toDTO(Flight f) {
+        FlightDTO dto = new FlightDTO();
+        dto.setFlightNumber(f.getFlightNumber());
+        dto.setDepartureCity(f.getDepartureCity());
+        dto.setArrivalCity(f.getArrivalCity());
+        dto.setDepartureHour(f.getDepartureHour());
+        dto.setArrivalHour(f.getArrivalHour());
+        dto.setNumberOfSeat(f.getNumberOfSeat());
+        dto.setEconomyClassPrice(f.getEconomyClassPrice());
+        return dto;
+    }
+
+    public List<FlightDTO> getAllFlightsDTO() {
+        return getAllFlights().stream().map(this::toDTO).collect(Collectors.toList());
+    }
+
+    public FlightDTO getFlightDTO(String flightNumber) {
+        return toDTO(getFlightByNumber(flightNumber));
+    }
+
+    public List<FlightDTO> searchFlightsDTO(String departureCity, String arrivalCity, LocalDateTime departureHour) {
+        return searchFlights(departureCity, arrivalCity, departureHour).stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 }
